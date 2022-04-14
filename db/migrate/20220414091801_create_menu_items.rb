@@ -1,0 +1,12 @@
+class CreateMenuItems < ActiveRecord::Migration[7.0]
+  def change
+    create_table :menu_items do |t|
+      t.string :name
+      t.text :description
+      t.float :price
+      t.integer :menu_category_id
+
+      t.timestamps
+    end
+  end
+end
