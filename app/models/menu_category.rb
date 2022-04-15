@@ -1,3 +1,3 @@
 class MenuCategory < ApplicationRecord
-  has_one :menu_item
+  has_many :menu_item
 end

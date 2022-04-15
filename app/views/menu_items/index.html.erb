@@ -1,14 +1,45 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Menu items</h1>
-
-<div id="menu_items">
+  <div class="container">
+  <div class="row">
+    <div class="col-sm">
+      
+  <!-- Mulai Bagian Daftar Menu -->
+  <div id="menu_items">
+  <h1>Daftar Menu</h1>
+  <table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Nama Menu</th>
+      <th scope="col">Deskripsi</th>
+      <th scope="col">Harga / porsi</th>
+      <th scope="col">Kategori Menu</th>
+    </tr>
+  </thead>
+  <tbody>
   <% @menu_items.each do |menu_item| %>
-    <%= render menu_item %>
-    <p>
-      <%= link_to "Show this menu item", menu_item %>
-    </p>
+    <tr>
+    <td><%= menu_item.name %></td>
+    <td><%= menu_item.description %></td>
+    <td><%= menu_item.price %></td>
+    <td><%= menu_item.menu_category_id %></td>
+    </tr>
   <% end %>
-</div>
+  </tbody>
+  </table>
 
-<%= link_to "New menu item", new_menu_item_path %>
+    <button type="button" class="btn btn-primary" ><%= link_to "Tambahkan menu baru", new_menu_item_path %></button>
+    
+  </div>
+  <!-- Selesai Bagian Daftar Menu -->
+
+    
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+    <div class="col-sm">
+      One of three columns
+    </div>
+  </div>
+</div>
