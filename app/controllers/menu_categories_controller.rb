@@ -34,7 +34,7 @@ class MenuCategoriesController < ApplicationController
 
     respond_to do |format|
       if @menu_category.save
-        format.html { redirect_to menu_category_url(@menu_category), notice: "Menu category was successfully created." }
+        format.html { redirect_to redirect_to '/menu_items', notice: "Menu category was successfully created." }
         format.json { render :show, status: :created, location: @menu_category }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -47,7 +47,7 @@ class MenuCategoriesController < ApplicationController
   def update
     respond_to do |format|
       if @menu_category.update(menu_category_params)
-        format.html { redirect_to menu_category_url(@menu_category), notice: "Menu category was successfully updated." }
+        format.html { redirect_to '/menu_items', notice: "Menu category was successfully updated." }
         format.json { render :show, status: :ok, location: @menu_category }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -58,10 +58,12 @@ class MenuCategoriesController < ApplicationController
 
   # DELETE /menu_categories/1 or /menu_categories/1.json
   def destroy
+    @menu_category = MenuCategory.find_by(id: params[:id])
+    puts "8"
     @menu_category.destroy
 
     respond_to do |format|
-      format.html { redirect_to menu_categories_url, notice: "Menu category was successfully destroyed." }
+      format.html { redirect_to '/menu_items', notice: "Menu category was successfully destroyed." }
       format.json { head :no_content }
     end
   end

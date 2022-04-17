@@ -1,5 +1,21 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: %i[ show edit update destroy ]
+  protect_from_forgery with: :null_session, only: [:tambahMenuItem, :updateMenuItem]
+  
+  def tambahOrder
+    @order = Order.new
+    @order.email = params[:email]
+    @order.total_price = '0'
+    @order.status = 'NEW'
+    @order.save!
+    redirect_to '/menu_items'
+  end
+
+  def konfirmasiPesanan
+    @order = Order.find_by(id: params[:order_id])
+    @order.update(status: 'PAID')
+    redirect_to order_url(params[:order_id])
+  end
 
   # GET /orders or /orders.json
   def index
@@ -8,6 +24,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/1 or /orders/1.json
   def show
+    @menu_items = MenuItem.all
     @order_details = OrderDetail.where(order_id: params[:id]).order(updated_at: :desc)
   end
 
@@ -26,7 +43,7 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
-        format.html { redirect_to order_url(@order), notice: "Order was successfully created." }
+        format.html { redirect_to '/menu_items', notice: "Order was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -39,7 +56,7 @@ class OrdersController < ApplicationController
   def update
     respond_to do |format|
       if @order.update(order_params)
-        format.html { redirect_to order_url(@order), notice: "Order was successfully updated." }
+        format.html { redirect_to '/menu_items', notice: "Order was successfully updated." }
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +70,7 @@ class OrdersController < ApplicationController
     @order.destroy
 
     respond_to do |format|
-      format.html { redirect_to orders_url, notice: "Order was successfully destroyed." }
+      format.html { redirect_to '/menu_items', notice: "Order was successfully destroyed." }
       format.json { head :no_content }
     end
   end

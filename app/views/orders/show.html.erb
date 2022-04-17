@@ -1,15 +1,77 @@
-<p style="color: green"><%= notice %></p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-5">
+
+      <p style="color: green"><%= notice %></p>
 
 <%= render @order %>
 
+  
 <div>
 
+  <form action="/konfirmasi-pesanan" method="post">
+  <%= csrf_meta_tags %>
+  <input name="_method" type="hidden" value="patch" />
+  <input type="number"hidden  name="order_id" value="<%= @order.id %>">
+  <input type="submit" class="form-control btn btn-lg btn-success" value="Konfirmasi Pembayaran Pesanan">
+  </form>
+  
+  <h3>Daftar menu dalam pesanan ini</h3>
+  <table class="table table-sm">
+  <thead>
+  <tr>
+      <th scope="col">Nama menu</th>
+      <th scope="col">Jumlah Porsi</th>
+      <th scope="col">Harga total porsi</th>
+      <th scope="col">Aksi</th>
+  </tr>
+  </thead>
+  <tbody>
   <% @order_details.each do |order_detail| %>
-    <%= order_detail.menu_item.name %>
+    <tr>
+      <td><%= order_detail.menu_item.name %></td>
+      <td><%= order_detail.portion_size %></td>
+      <td><%= order_detail.total_portion_price %></td>
+      <td><%= button_to "Hapus", order_detail_path(order_detail.id), class: "btn btn-danger mt-2", method: :delete,params: { order_id: @order.id } %></td>
+    </tr>
   <% end %>
+  </tbody>
+  </table>
     
-  <%= link_to "Edit this order", edit_order_path(@order) %> |
-  <%= link_to "Back to orders", orders_path %>
+  <%= link_to "Kembali ke Dashboard", menu_items_path %>
+</div>
+    
+    </div>
 
-  <%= button_to "Destroy this order", @order, method: :delete %>
+    <div class="col-md-7">
+
+        <div id="menu_items">
+  <h3>Daftar Menu</h3>
+    <% @menu_items.each do |menu_item| %>
+    <div class="card shadow mt-2" >
+    <div class="card-body">
+    <h5 class="card-title"><%= menu_item.name %></h5>
+    <h6 class="card-subtitle mb-2 text-muted"><%= menu_item.menu_category.name %></h6>
+    <p class="card-text"><%= menu_item.description %></p>
+    <button class="btn btn-outline-success "><strong>Rp.<%= menu_item.price %></strong></button>
+
+  <form action="/tambah-item-pesanan" method="post">
+  <%= csrf_meta_tags %>
+
+  <input type="number" hidden name="order_id" value="<%= @order.id %>">
+  <input type="number" hidden name="menu_item_id" value="<%= menu_item.id %>">
+  <input type="number" hidden name="menu_item_price" value="<%= menu_item.price %>">
+
+  <label for="porsi">Jumlah porsi :</label><br>
+  <input type="number" class="form-control" id="portion_size" name="portion_size"  ><br>
+  <input type="submit" class="form-control btn btn-primary" value="Tambahkan ke daftar pesan">
+  
+  </form>
+  </div>
+  </div>
+  <% end %>
+
+    
+    </div>
+
 </div>
