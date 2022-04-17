@@ -1,9 +1,29 @@
 class MenuItemsController < ApplicationController
-  before_action :set_menu_item, only: %i[ show edit update destroy ]
+  before_action :set_menu_item, only: %i[ show edit update destroy]
+  protect_from_forgery with: :null_session, only: [:tambahMenuItem, :updateMenuItem]
+  
+  def tambahMenuItem
+    @menu_item = MenuItem.new
+    @menu_item.name = params[:name]
+    @menu_item.description = params[:description]
+    @menu_item.price = params[:price]
+    @menu_item.menu_category_id = params[:menu_category_id]
+    @menu_item.save!
+    redirect_to '/menu_items'
+  end
 
+  def updateMenuItem
+    @menu_item2 = MenuItem.find_by(id: params[:id])
+    @menu_item2.update(name: params[:name], description: params[:description], price: params[:price], menu_category_id: params[:menu_category_id])
+
+    redirect_to '/menu_items'
+  end
+  
   # GET /menu_items or /menu_items.json
   def index
     @menu_items = MenuItem.all
+    @menu_category_items = MenuCategory.all
+    @order_items = Order.all
   end
 
   # GET /menu_items/1 or /menu_items/1.json
@@ -13,15 +33,18 @@ class MenuItemsController < ApplicationController
   # GET /menu_items/new
   def new
     @menu_item = MenuItem.new
+    @menu_category_items = MenuCategory.all
   end
 
   # GET /menu_items/1/edit
   def edit
+    @menu_category_items = MenuCategory.all
   end
 
   # POST /menu_items or /menu_items.json
   def create
     @menu_item = MenuItem.new(menu_item_params)
+    @menu_category_items = MenuCategory.all
 
     respond_to do |format|
       if @menu_item.save

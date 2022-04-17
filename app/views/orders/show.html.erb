@@ -3,6 +3,11 @@
 <%= render @order %>
 
 <div>
+
+  <% @order_details.each do |order_detail| %>
+    <%= order_detail.menu_item.name %>
+  <% end %>
+    
   <%= link_to "Edit this order", edit_order_path(@order) %> |
   <%= link_to "Back to orders", orders_path %>
 

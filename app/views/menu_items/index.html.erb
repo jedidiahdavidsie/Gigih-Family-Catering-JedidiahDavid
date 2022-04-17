@@ -1,45 +1,129 @@
 <p style="color: green"><%= notice %></p>
 
-  <div class="container">
+  <div class="container" >
   <div class="row">
-    <div class="col-sm">
-      
-  <!-- Mulai Bagian Daftar Menu -->
-  <div id="menu_items">
-  <h1>Daftar Menu</h1>
+
+  <div class="col-md-8">
+  <!-- Mulai Bagian Daftar Pesanan -->
+  <div id="menu_category_items">
+  <h3>Daftar Pesanan</h3>
+  <%= link_to "Tambahkan order baru", new_order_path, class: "btn btn-primary mt-2 w-100" %>
   <table class="table table-sm">
   <thead>
     <tr>
-      <th scope="col">Nama Menu</th>
-      <th scope="col">Deskripsi</th>
-      <th scope="col">Harga / porsi</th>
-      <th scope="col">Kategori Menu</th>
+      <th scope="col">Email Pemesan</th>
+      <th scope="col">Total Biaya Pesanan</th>
+      <th scope="col">Status</th>
+      <th scope="col">Aksi</th>
     </tr>
   </thead>
   <tbody>
-  <% @menu_items.each do |menu_item| %>
+  <% @order_items.each do |order| %>
     <tr>
-    <td><%= menu_item.name %></td>
-    <td><%= menu_item.description %></td>
-    <td><%= menu_item.price %></td>
-    <td><%= menu_item.menu_category_id %></td>
+    <td><%= order.email %></td>
+    <td><%= order.total_price %></td>
+    <td><%= order.status %></td>
+    <td><%= link_to "Lihat Detail", order_url( :id => order.id ), class: "btn btn-info" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+  </table>
+    
+  </div>
+  <!-- Selesai Bagian Daftar Pesanan -->
+  </div>
+  
+
+  <div class="col-md-4" style="border-left:1px solid gray;">
+
+  <!-- Mulai Bagian Daftar Menu -->
+  <div id="menu_items">
+  <h3>Daftar Menu</h3>
+  <%= link_to "Tambahkan menu baru", new_menu_item_path, class: "btn btn-primary mt-2 w-100" %>
+    <% @menu_items.each do |menu_item| %>
+    <div class="card shadow mt-2" >
+    <div class="card-body">
+    <h5 class="card-title"><%= menu_item.name %></h5>
+    <h6 class="card-subtitle mb-2 text-muted"><%= menu_item.menu_category.name %></h6>
+    <p class="card-text"><%= menu_item.description %></p>
+    <button class="btn btn-outline-success mt-2"><strong>Rp.<%= menu_item.price %></strong></button>
+    <%= link_to "Edit Menu", edit_menu_item_path(menu_item.id), class: "btn btn-primary mt-2" %>
+    <%= link_to "Hapus Menu", menu_item_path(menu_item.id), class: "btn btn-danger mt-2", method: :delete,params: { id: menu_item.id } %>
+  </div>
+  </div>
+  <% end %>
+
+  <!-- Mulai Form Pembuatan Menu Baru -->
+  <div class="card mt-2">
+  <div class="card-header">Masukkan Data Menu Baru</div>
+  <div class="card-body">
+  <form action="/tambah-menu-item" method="post">
+  <%= csrf_meta_tags %>
+  <label for="name">Nama menu baru:</label><br>
+  <input type="text" class="form-control" id="name" name="name" >
+  <label for="description">Deskripsi :</label><br>
+  <textarea class="form-control" id="description" name="description" ></textarea>
+  <label for="price">Harga /porsi :</label><br>
+  <input type="number"" class="form-control" id="price" name="price" >
+  <label for="menu_category_id">Kategori menu :</label><br>
+  <select name="menu_category_id" id="menu_category_id" class="form-control">
+  <% @menu_category_items.each do |menu_category| %>
+  <option value=<%= menu_category.id %> ><%= menu_category.name %></option>
+  <% end %>
+  </select><br>
+  <input type="submit" class="form-control btn btn-primary" value="Masukkan Data">
+  </form>
+  </div>
+  </div>
+  <!-- Selesai Form Pembuatan Menu Baru --> 
+    
+  </div>
+    
+  <!-- Selesai Bagian Daftar Menu -->
+    
+  <!-- Mulai Bagian Daftar Kategori Menu -->
+  <div id="menu_category_items" class="mt-2" >
+  <h3>Daftar Kategori Menu</h3>
+  <%= link_to "Tambahkan kategori menu baru", new_menu_category_path, class: "btn btn-primary mt-2 w-100" %>
+  <table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Nama Kategori</th>
+      <th scope="col">Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @menu_category_items.each do |menu_category| %>
+    <tr>
+    <td><%= menu_category.name %></td>
+    <td>
+    <%= link_to "Edit", edit_menu_category_path(menu_category.id), class: "btn btn-primary mt-2" %>
+    <%= link_to "Hapus", menu_category_path(menu_category.id), class: "btn btn-danger mt-2", method: :delete,params: { id: menu_category.id } %>
+    </td>
     </tr>
   <% end %>
   </tbody>
   </table>
 
-    <button type="button" class="btn btn-primary" ><%= link_to "Tambahkan menu baru", new_menu_item_path %></button>
+  <!-- Mulai Form Pembuatan Kategori Baru -->
+  <div class="card mt-2">
+  <div class="card-header">Masukkan Data Kategori Baru</div>
+  <div class="card-body">
+  <form action="/tambah-menu-category" method="post">
+  <%= csrf_meta_tags %>
+  <label for="name">Nama kategori baru:</label><br>
+  <input type="text" class="form-control" id="name" name="name" >
+  <label for="description">Deskripsi :</label><br>
+  <textarea maxlength="150" class="form-control" id="description" name="description" ></textarea><br>
+  <input type="submit" class="form-control btn btn-primary" value="Masukkan Data">
+  </form>
+  </div>
+  </div>
+  <!-- Selesai Form Pembuatan Kategori Baru --> 
     
   </div>
-  <!-- Selesai Bagian Daftar Menu -->
-
+  <!-- Selesai Bagian Daftar Kategori Menu -->
+  </div>
     
-    </div>
-    <div class="col-sm">
-      One of three columns
-    </div>
-    <div class="col-sm">
-      One of three columns
-    </div>
   </div>
 </div>

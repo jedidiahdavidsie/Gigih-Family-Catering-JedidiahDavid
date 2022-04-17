@@ -1,9 +1,21 @@
-<h1>New menu item</h1>
+<div class="container" >
+<h1>Menu Item Baru</h1>
+<form action="/tambah-menu-item" method="post">
+  <%= csrf_meta_tags %>
+  <label for="name">Nama:</label><br>
+  <input type="text" id="name" name="name" ><br>
+  <label for="description">Deskripsi:</label><br>
+  <input type="text" id="description" name="description" ><br>
+  <label for="price">Harga /porsi</label><br>
+  <input type="text" id="price" name="price" ><br>
+  <label for="menu_category_id">Kategori</label><br>
+  <input type="text" id="menu_category_id" name="menu_category_id" ><br><br>
 
-<%= render "form", menu_item: @menu_item %>
-
+  <input type="submit" value="Submit">
+</form>
 <br>
 
 <div>
-  <%= link_to "Back to menu items", menu_items_path %>
+  <%= link_to "Kembali ke Dashboard", menu_items_path %>
+</div>
 </div>

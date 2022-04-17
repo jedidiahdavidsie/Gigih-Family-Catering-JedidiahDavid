@@ -8,6 +8,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/1 or /orders/1.json
   def show
+    @order_details = OrderDetail.where(order_id: params[:id]).order(updated_at: :desc)
   end
 
   # GET /orders/new

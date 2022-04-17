@@ -1,6 +1,15 @@
 class MenuCategoriesController < ApplicationController
   before_action :set_menu_category, only: %i[ show edit update destroy ]
-
+  protect_from_forgery with: :null_session, only: [:tambahMenuItem]
+  
+  def tambahMenuCategory
+    @menu_category = MenuCategory.new
+    @menu_category.name = params[:name]
+    @menu_category.description = params[:description]
+    @menu_category.save!
+    redirect_to '/menu_items'
+  end
+  
   # GET /menu_categories or /menu_categories.json
   def index
     @menu_categories = MenuCategory.all
