@@ -1,6 +1,7 @@
 
 # Gigih Family Catering
 
+![Screenshot](ss.jpg)
 Hello -- here's my submitted assignment for Gigih's backend final technical class project. It is a website that can store menus/dishes, menu categories, and orders. 
 
 - You could try restarting the database anew with ``ruby
