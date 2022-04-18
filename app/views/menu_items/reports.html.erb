@@ -1,0 +1,75 @@
+<p style="color: green"><%= notice %></p>
+
+<div class="container">
+<h3>Based on what parameter do you want the report the be displayed?</h3>
+
+  <form action="/sales" method="get">
+  <%= csrf_meta_tags %>
+  <table class="table table-sm">
+    <tr>
+      <td>Date</td>
+      <td><input class="form-control" type="date" name="datePick"></td>
+      <td>
+      <input type="radio"  name="searchBy" value="datePick" checked>
+      <label for="html">Search by the date on which the order is made</label>
+      </td>
+    </tr>
+    <tr>
+      <td>Email</td>
+      <td><input class="form-control" type="text" name="emailPick"></td>
+      <td>
+      <input type="radio"  name="searchBy" value="emailPick">
+      <label for="html">Search by customer's email</label>
+      </td>
+    </tr>
+    <tr>
+      <td>Highest invoice expenses</td>
+      <td><input class="form-control" type="number" name="highestPick"></td>
+      <td>
+      <input type="radio"  name="searchBy" value="highestPick">
+      <label for="html">Search invoices with expenses higher than defined</label>
+      </td>
+    </tr>
+  <tr>
+      <td>Date range</td>
+      <td>Since :<input class="form-control" type="date" name="dateRangePickSince">
+          Until :
+      <input class="form-control" type="date" name="dateRangePickUntil"></td>
+      <td>
+      <input type="radio"  name="searchBy" value="dateRangePick">
+      <label for="html">Search invoices made between the defined timespan</label>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=3><input class="btn btn-primary w-100" type="submit" value="Display report" ></td>
+    </tr>
+  </table>
+  </form>
+
+  <h4><%= @tableTitle %></h4>
+  <table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Customer's email</th>
+      <th scope="col">Total order costs</th>
+      <th scope="col">Status</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @orders.each do |order| %>
+    <tr>
+    <td><%= order.email %></td>
+    <td>Rp.<%= order.total_price %></td>
+    <% if order.status == 'PAID' %>
+    <td><span class="btn btn-primary"><%= order.status %></span></td>
+    <% else %>
+    <td><span class="btn btn-danger"><%= order.status %></span></td>
+    <% end %>
+    </tr>
+  <% end %>
+  </tbody>
+  </table>
+  
+  <%= link_to "Back to Dashboard", menu_items_path %>
+  
+</div>

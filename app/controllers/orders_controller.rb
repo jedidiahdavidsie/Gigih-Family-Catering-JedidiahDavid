@@ -17,6 +17,12 @@ class OrdersController < ApplicationController
     redirect_to order_url(params[:order_id])
   end
 
+  def konfirmasiPembatalanPesanan
+    @order = Order.find_by(id: params[:order_id])
+    @order.update(status: 'CANCELED')
+    redirect_to order_url(params[:order_id])
+  end
+
   # GET /orders or /orders.json
   def index
     @orders = Order.all

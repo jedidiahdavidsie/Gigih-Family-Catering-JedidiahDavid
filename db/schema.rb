@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 2022_04_14_110737) do
     t.text "description"
     t.float "price"
     t.integer "menu_category_id"
-    t.string "textValue"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

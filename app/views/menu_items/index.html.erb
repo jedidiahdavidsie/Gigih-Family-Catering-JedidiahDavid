@@ -1,27 +1,27 @@
 <div class="container" >
 
-
-<div class="mt-4 alert alert-primary" role="alert">
-<%= notice %>
-</div>
-
-    
   <div class="row">
 
+    
+  <div class="mt-4 alert alert-success" role="alert">
+  Hello, owner. Here's your dashboard. Check the list of unconfirmed invoices below. Once you've confirmed the payment, you can set them confirmed in their respective details page. If you're seeing this from desktop, then the report button, list of menus, and list of categories shall be on the right side.
+  </div>
+    
   <div class="col-md-8">
   <!-- Mulai Bagian Daftar Pesanan -->
   <div id="menu_category_items">
-  <h3>Daftar Pesanan</h3>
+  <h3>List of Orders</h3>
 
     <!-- Mulai Form Pembuatan Menu Baru -->
   <div class="card mt-2">
-  <div class="card-header">Masukkan Data Pesanan Baru</div>
+  <div class="card-header">Got some new orders? Enter the customer's email below..</div>
   <div class="card-body">
   <form action="/tambah-order" method="post">
   <%= csrf_meta_tags %>
-  <label for="email">Masukkan e-mail anda:</label><br>
-  <input type="email" class="form-control" id="email" name="email" ><br>
-  <input type="submit" class="form-control btn btn-primary" value="Masukkan Data Pesanan Baru">
+  <label for="email">Enter the customer's email:</label><br>
+  <input type="email" class="form-control" id="email" name="email" >
+  <span>The new customer's email will be listed in the table below. Go to it's details page to add menu items.</span>
+  <input type="submit" class="form-control btn btn-primary" value="Confirm New Order">
   </form>
   </div>
   </div>
@@ -29,20 +29,26 @@
   <table class="table table-sm">
   <thead>
     <tr>
-      <th scope="col">Email Pemesan</th>
-      <th scope="col">Total Biaya Pesanan</th>
+      <th scope="col">Customer's email</th>
+      <th scope="col">Total order costs</th>
       <th scope="col">Status</th>
-      <th scope="col">Aksi</th>
+      <th scope="col">Actions</th>
     </tr>
   </thead>
   <tbody>
   <% @order_items.each do |order| %>
     <tr>
     <td><%= order.email %></td>
-    <td><%= order.total_price %></td>
-    <td><%= order.status %></td>
-    <td><%= link_to "Lihat Detail", order_url( :id => order.id ), class: "btn btn-outline-success" %>
-    <%= button_to "Hapus Order", order_url(order.id), class: "btn btn-outline-danger mt-2", method: :delete %>
+    <td>Rp.<%= order.total_price %></td>
+    <% if order.status == 'PAID' %>
+    <td><span class="btn btn-primary"><%= order.status %></span></td>
+    <% elsif order.status == 'CANCELED' %>
+    <td><span class="btn btn-dark"><%= order.status %></span></td>
+    <% else %>
+    <td><span class="btn btn-danger"><%= order.status %></span></td>
+    <% end %>
+    <td><%= link_to "See Details", order_url( :id => order.id ), class: "btn btn-outline-success" %>
+    <%= button_to "Delete this order", order_url(order.id), class: "btn btn-outline-danger mt-2", method: :delete %>
         
     </td>
     </tr>
@@ -58,8 +64,14 @@
   <div class="col-md-4 mb-2" style="border-left:1px solid gray;">
 
   <!-- Mulai Bagian Daftar Menu -->
+
+  <div id="reports">
+    <h3>Reports</h3>
+    <%= link_to "Click here to see overall reports of your sales", '/sales', class: "btn btn-primary w-100" %>
+  </div>
+    
   <div id="menu_items">
-  <h3>Daftar Menu</h3>
+  <h3>List of menu items</h3>
     <% @menu_items.each do |menu_item| %>
     <div class="card shadow mt-2" >
     <div class="card-body">
@@ -69,30 +81,30 @@
     <p class="card-text"><%= menu_item.description %></p>
     <button class="btn btn-outline-success "><strong>Rp.<%= menu_item.price %></strong></button>
     <%= link_to "Edit Menu", edit_menu_item_path(menu_item.id), class: "btn btn-outline-primary " %>
-    <%= button_to "Hapus Menu", menu_item_path(menu_item.id), class: "btn btn-outline-danger mt-2", method: :delete,params: { id: menu_item.id } %>
+    <%= button_to "Delete Menu", menu_item_path(menu_item.id), class: "btn btn-outline-danger mt-2", method: :delete,params: { id: menu_item.id } %>
   </div>
   </div>
   <% end %>
 
   <!-- Mulai Form Pembuatan Menu Baru -->
   <div class="card mt-2">
-  <div class="card-header">Masukkan Data Menu Baru</div>
+  <div class="card-header">Input New Menu Item</div>
   <div class="card-body">
   <form action="/tambah-menu-item" method="post">
   <%= csrf_meta_tags %>
-  <label for="name">Nama menu baru:</label><br>
+  <label for="name">Name of new menu:</label><br>
   <input type="text" class="form-control" id="name" name="name" >
-  <label for="description">Deskripsi :</label><br>
+  <label for="description">Description :</label><br>
   <textarea class="form-control" id="description" name="description" ></textarea>
-  <label for="price">Harga /porsi :</label><br>
+  <label for="price">Price per portion: (Rp. )</label><br>
   <input type="number"" class="form-control" id="price" name="price" >
-  <label for="menu_category_id">Kategori menu :</label><br>
+  <label for="menu_category_id">Menu's category :</label><br>
   <select name="menu_category_id" id="menu_category_id" class="form-control">
   <% @menu_category_items.each do |menu_category| %>
   <option value=<%= menu_category.id %> ><%= menu_category.name %></option>
   <% end %>
   </select><br>
-  <input type="submit" class="form-control btn btn-primary" value="Masukkan Data Menu Baru">
+  <input type="submit" class="form-control btn btn-primary" value="Confirm new menu">
   </form>
   </div>
   </div>
@@ -104,12 +116,12 @@
     
   <!-- Mulai Bagian Daftar Kategori Menu -->
   <div id="menu_category_items" class="mt-2" >
-  <h3>Daftar Kategori Menu</h3>
+  <h3>List of menu categories</h3>
   <table class="table table-sm">
   <thead>
     <tr>
-      <th scope="col">Nama Kategori</th>
-      <th scope="col">Aksi</th>
+      <th scope="col">Category</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
@@ -117,8 +129,8 @@
     <tr>
     <td><%= menu_category.name %></td>
     <td>
-    <%= link_to "Edit", edit_menu_category_path(menu_category.id), class: "btn btn-outline-primary " %>
-    <%= button_to "Hapus", menu_category_path(menu_category.id), class: "btn btn-outline-danger mt-2", method: :delete %>
+    <%= link_to "Edit Category", edit_menu_category_path(menu_category.id), class: "btn btn-outline-primary " %>
+    <%= button_to "Delete Category", menu_category_path(menu_category.id), class: "btn btn-outline-danger mt-2", method: :delete %>
     </td>
     </tr>
   <% end %>
@@ -127,15 +139,15 @@
 
   <!-- Mulai Form Pembuatan Kategori Baru -->
   <div class="card mt-2 ">
-  <div class="card-header">Masukkan Data Kategori Baru</div>
+  <div class="card-header">Input New Menu Category</div>
   <div class="card-body">
   <form action="/tambah-menu-category" method="post">
   <%= csrf_meta_tags %>
-  <label for="name">Nama kategori baru:</label><br>
+  <label for="name">Name of new category:</label><br>
   <input type="text" class="form-control" id="name" name="name" >
-  <label for="description">Deskripsi :</label><br>
+  <label for="description">Description :</label><br>
   <textarea maxlength="150" class="form-control" id="description" name="description" ></textarea><br>
-  <input type="submit" class="form-control btn btn-primary" value="Masukkan Data Kategori Baru">
+  <input type="submit" class="form-control btn btn-primary" value="Confirm new category">
   </form>
   </div>
   </div>

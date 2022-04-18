@@ -4,13 +4,13 @@
 <form action="/update-menu-item/<%= @menu_item.id %>" method="post">
   <%= csrf_meta_tags %>
   <input name="_method" type="hidden" value="patch" />
-  <label for="name">Nama:</label><br>
+  <label for="name">Name :</label><br>
   <input type="text" id="name" name="name" value='<%= @menu_item.name %>' class="form-control"><br>
-  <label for="description">Deskripsi:</label><br>
-  <textarea id="description" name="description" value='<%= @menu_item.description %>' class="form-control"></textarea><br>
-  <label for="price">Harga /porsi</label><br>
+  <label for="description">Description :</label><br>
+  <textarea id="description" name="description" class="form-control"><%= @menu_item.description %></textarea><br>
+  <label for="price">Price /portion :</label><br>
   <input type="text" id="price" name="price" value='<%= @menu_item.price %>' class="form-control"><br>
-  <label for="menu_category_id">Kategori</label><br>
+  <label for="menu_category_id">Category :</label><br>
   <select name="menu_category_id" id="menu_category_id" class="form-control">
   <% @menu_category_items.each do |menu_category| %>
   <% if menu_category.id == @menu_item.menu_category_id %>

@@ -18,6 +18,32 @@ class MenuItemsController < ApplicationController
 
     redirect_to '/menu_items'
   end
+
+  def reports
+    case params[:searchBy]
+    when 'datePick'
+      if params[:datePick]
+        @datePick = params[:datePick]
+      else
+        @datePick = Date.today
+      end
+      @tableTitle = "Report for invoices made on " + @datePick.to_s
+      @orders = Order.where(status: "PAID").where("created_at LIKE ?", "%" + @datePick.to_s + "%")
+    when 'emailPick'
+      @tableTitle = "Report for invoices made by " + params[:emailPick].to_s
+      @orders = Order.where(status: "PAID").where("email LIKE ?", "%" + params[:emailPick].to_s + "%")
+    when 'highestPick'
+      @tableTitle = "Report for invoices with total expenses higher than Rp." + params[:highestPick].to_s
+      @orders = Order.where(status: "PAID").where("total_price > ?",  params[:highestPick].to_f )
+    when 'dateRangePick'
+      @tableTitle = "Report for invoices made between " + params[:dateRangePickSince].to_s + " until " + params[:dateRangePickUntil].to_s
+      @orders = Order.where(status: "PAID").where("created_at BETWEEN ? AND ?",  params[:dateRangePickSince].to_s, params[:dateRangePickUntil].to_s )
+    else
+      @orders = Order.all
+    end
+    
+
+  end
   
   # GET /menu_items or /menu_items.json
   def index
