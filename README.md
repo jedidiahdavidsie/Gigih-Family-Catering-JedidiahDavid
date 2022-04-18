@@ -1,25 +1,12 @@
-# Rails on Replit
 
-This is a template to get you started with Rails on Replit. It's ready to go so you can just hit run and start coding!
+# Gigih Family Catering
 
-This template was generated using `rails new` (after you install the `rails` gem from the packager sidebar) so you can always do that if you prefer to set it up from scratch. The only had two make config changes we had to make to run it on Replit:
+Hello -- here's my submitted assignment for Gigih's backend final technical class project. It is a website that can store menus/dishes, menu categories, and orders. 
 
-- bind the app on `0.0.0.0` instead of `localhost` (see `.replit`)
-- allow `*.repl.co` hosts (see `config/environments/development.rb`)
-- allow the app to be iframed on `replit.com` (see `config/application.rb`)
+- You could try restarting the database anew with ``ruby
+rake db:migrate:reset``. If you do, please populate some dishes categories first, then populate some dishes. Only then can you add dishes to each orders.
 
-## Running the app
+- On the Dashboard page, enter new order by entering the customer's email. The newly created order record will be displayed in the orders table. Click on each order's details page to add the menu/dishes that are ordered by the customer. You can also confirm whether the order has been paid or been canceled there.
 
-Simple hit run! You can edit the run command from the `.replit` file.
+- On the Reports page, you'll initially be presented with all the orders, regardless of their confirmation status. By choosing either of the four filtering radio, and entering the information for that option, you can filter the invoices to only present the ones that are PAID and meet the criteria of your filter.
 
-## Running commands
-
-Start every command with `bundle exec` so that it runs in the context of the installed gems environment. The console pane will give you output from the server but you can run arbitrary command from the shell without stopping the server.
-
-## Database
-
-SQLite would work in development but we don't recommend running it in production. Instead look into using the built-in [Replit database](http://docs.replit.com/misc/database). Otherwise you are welcome to connect databases from your favorite provider. 
-
-## Help
-
-If you need help you might be able to find an answer on our [docs](https://docs.replit.com) page. Alternatively you can [ask in the community](https://replit.com/talk/ask). Feel free to report bugs [here](https://replit.com/bugs) and give us feedback [here](https://Replit/feedback).

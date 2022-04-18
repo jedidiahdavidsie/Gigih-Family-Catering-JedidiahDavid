@@ -29,6 +29,7 @@ class MenuItemsController < ApplicationController
       end
       @tableTitle = "Report for invoices made on " + @datePick.to_s
       @orders = Order.where(status: "PAID").where("created_at LIKE ?", "%" + @datePick.to_s + "%")
+      
     when 'emailPick'
       @tableTitle = "Report for invoices made by " + params[:emailPick].to_s
       @orders = Order.where(status: "PAID").where("email LIKE ?", "%" + params[:emailPick].to_s + "%")
@@ -41,7 +42,11 @@ class MenuItemsController < ApplicationController
     else
       @orders = Order.all
     end
-    
+
+    @totalEarnings = 0
+    @orders.each do |orderItem|
+      @totalEarnings += orderItem.total_price.to_f
+    end
 
   end
   

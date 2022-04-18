@@ -39,13 +39,13 @@
   <% @order_items.each do |order| %>
     <tr>
     <td><%= order.email %></td>
-    <td>Rp.<%= order.total_price %></td>
+    <td><%= number_to_currency(order.total_price, unit: "Rp.", format: "%u %n") %></td>
     <% if order.status == 'PAID' %>
     <td><span class="btn btn-primary"><%= order.status %></span></td>
     <% elsif order.status == 'CANCELED' %>
-    <td><span class="btn btn-dark"><%= order.status %></span></td>
-    <% else %>
     <td><span class="btn btn-danger"><%= order.status %></span></td>
+    <% else %>
+    <td><span class="btn btn-success"><%= order.status %></span></td>
     <% end %>
     <td><%= link_to "See Details", order_url( :id => order.id ), class: "btn btn-outline-success" %>
     <%= button_to "Delete this order", order_url(order.id), class: "btn btn-outline-danger mt-2", method: :delete %>
@@ -79,7 +79,7 @@
     <h6 class="card-subtitle mb-2 text-muted"><%= menu_item.menu_category.name %></h6>
     <h4>Rp.<%= menu_item.price %></h4>
     <p class="card-text"><%= menu_item.description %></p>
-    <button class="btn btn-outline-success "><strong>Rp.<%= menu_item.price %></strong></button>
+    <button class="btn btn-outline-success "><strong><%= number_to_currency(menu_item.price,  unit: "Rp.", format: "%u %n") %></strong></button>
     <%= link_to "Edit Menu", edit_menu_item_path(menu_item.id), class: "btn btn-outline-primary " %>
     <%= button_to "Delete Menu", menu_item_path(menu_item.id), class: "btn btn-outline-danger mt-2", method: :delete,params: { id: menu_item.id } %>
   </div>
@@ -97,7 +97,7 @@
   <label for="description">Description :</label><br>
   <textarea class="form-control" id="description" name="description" ></textarea>
   <label for="price">Price per portion: (Rp. )</label><br>
-  <input type="number"" class="form-control" id="price" name="price" >
+  <input type="number" min="0.01" class="form-control" id="price" name="price" >
   <label for="menu_category_id">Menu's category :</label><br>
   <select name="menu_category_id" id="menu_category_id" class="form-control">
   <% @menu_category_items.each do |menu_category| %>

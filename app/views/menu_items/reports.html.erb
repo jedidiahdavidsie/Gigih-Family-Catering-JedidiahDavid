@@ -59,7 +59,7 @@
   <% @orders.each do |order| %>
     <tr>
     <td><%= order.email %></td>
-    <td>Rp.<%= order.total_price %></td>
+    <td><%= number_to_currency(order.total_price,  unit: "Rp.", format: "%u %n") %></td>
     <% if order.status == 'PAID' %>
     <td><span class="btn btn-primary"><%= order.status %></span></td>
     <% else %>
@@ -67,6 +67,11 @@
     <% end %>
     </tr>
   <% end %>
+    <tr>
+      <td colspan=3 style="text-align:right;">
+        Total Earnings : <%= number_to_currency(@totalEarnings,  unit: "Rp.", format: "%u %n") %>
+      </td>
+    </tr>
   </tbody>
   </table>
   
